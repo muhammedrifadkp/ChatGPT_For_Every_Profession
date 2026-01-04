@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT for Every Profession</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400&display=swap');
+
+        :root {
+            --primary: #10a37f;
+            --bg: #f7f7f8;
+            --surface: #ffffff;
+            --text-main: #202123;
+            --text-sub: #6e6e80;
+
+            /* Accents */
+            --accent-fashion: #ff6b6b;
+            --accent-interior: #ffa502;
+            --accent-office: #3742fa;
+            --accent-graphic: #e056fd;
+            --accent-code: #2ed573;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--surface);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-sub);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-main);
+        }
+
+        .nav-btn.active {
+            background: var(--text-main);
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            min-height: 80vh;
+        }
+
+        .page-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, #2d3436 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card-menu {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+            cursor: pointer;
+            border-top: 5px solid #ccc;
+        }
+
+        .card-menu:hover {
+            transform: translateY(-5px);
+        }
+
+        .course-header {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            border-left: 8px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-header h2 {
+            font-size: 2rem;
+        }
+
+        .section-title {
+            margin: 2rem 0 1rem 0;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title span {
+            background: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 1rem;
+        }
+
+        /* PROMPTS */
+        .prompts-container {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .prompt-box {
+            background: #0f172a;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #1e293b;
+            color: #f1f5f9;
+            position: relative;
+        }
+
+        .prompt-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .prompt-header {
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .prompt-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prompt-label::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .prompt-content-wrapper {
+            padding: 1.5rem;
+            background: #0f172a;
+        }
+
+        .prompt-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            white-space: normal;
+            background: #1e293b;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #4ade80;
+        }
+
+        .template-block {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        .template-title {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .template-example {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            font-style: italic;
+        }
+
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: #10a37f;
+            border-color: #10a37f;
+            transform: scale(1.05);
+        }
+
+        /* Masterpiece Styling */
+        .masterpiece-box {
+            border: 2px solid #eab308;
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.1);
+        }
+
+        .masterpiece-box .prompt-label {
+            color: #eab308 !important;
+        }
+
+        .masterpiece-box .prompt-label::before {
+            background: #eab308;
+            box-shadow: 0 0 10px #eab308;
+        }
+
+        /* Tool Cards */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tool-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            text-decoration: none;
+            display: block;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .tool-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+
+        .badge-free {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-freemium {
+            background: #e0f2fe;
+            color: #075985;
+        }
+
+        .badge-paid {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .tool-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .tool-desc {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+        }
+
+        .uses-list {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 12px;
+            list-style: none;
+        }
+
+        .uses-list li {
+            margin-bottom: 0.75rem;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .uses-list li::before {
+            content: "✓";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* Accents */
+        #fashion .prompt-label {
+            color: var(--accent-fashion);
+        }
+
+        #fashion .prompt-text {
+            border-color: var(--accent-fashion);
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo"><span>ClassroomAI</span></div>
+        <div class="nav-links">
+            <button class="nav-btn active" onclick="showSection('home', this)">Home</button>
+            <button class="nav-btn" onclick="showSection('fashion', this)">Fashion</button>
+            <button class="nav-btn" onclick="showSection('interior', this)">Interior</button>
+            <button class="nav-btn" onclick="showSection('office', this)">Office</button>
+            <button class="nav-btn" onclick="showSection('graphic', this)">Graphic</button>
+            <button class="nav-btn" onclick="showSection('fullstack', this)">Full-Stack</button>
+        </div>
+    </nav>
+    <div class="container">
+        <!-- HOME SECTION -->
+        <div id="home" class="page-section active">
+            <div class="hero">
+                <!-- <div style="font-size:4rem; margin-bottom:1rem;">🚀</div> -->
+                <h1>Master AI for <span
+                        style="color:var(--primary); text-decoration: underline; text-decoration-color: #10a37f55;">Your
+                        Career</span></h1>
+                <p>Don't get left behind. Select your profession below to unlock <b>Masterpiece Prompts</b>,
+                    <b>Tools</b>, and <b>Workflows</b> tailored just for you.
+                </p>
+            </div>
+
+            <div class="grid-menu">
+                <!-- Fashion -->
+                <div class="card-menu" style="border-top-color: var(--accent-fashion);" onclick="clickNav('fashion')">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                        <span style="font-size:2rem; background: #fff0f0; padding:10px; border-radius:12px;">👗</span>
+                        <span style="color:var(--accent-fashion); font-weight:800; font-size:0.8rem;">MODULE 01</span>
+                    </div>
+                    <h3>Fashion Design</h3>
+                    <p>Create visual renders, tech packs, patterns, and trend forecasts instantly.</p>
+                </div>
+
+                <!-- Interior -->
+                <div class="card-menu" style="border-top-color: var(--accent-interior);" onclick="clickNav('interior')">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                        <span style="font-size:2rem; background: #fff9e6; padding:10px; border-radius:12px;">🛋️</span>
+                        <span style="color:var(--accent-interior); font-weight:800; font-size:0.8rem;">MODULE 02</span>
+                    </div>
+                    <h3>Interior & Arch.</h3>
+                    <p>Generate renovation plans, material boards, and client emails effortlessly.</p>
+                </div>
+
+                <!-- Office -->
+                <div class="card-menu" style="border-top-color: var(--accent-office);" onclick="clickNav('office')">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                        <span style="font-size:2rem; background: #eef2ff; padding:10px; border-radius:12px;">📊</span>
+                        <span style="color:var(--accent-office); font-weight:800; font-size:0.8rem;">MODULE 03</span>
+                    </div>
+                    <h3>Office Automation</h3>
+                    <p>Master Excel, VBA macros, data analytics, and corporate communication.</p>
+                </div>
+
+                <!-- Graphic -->
+                <div class="card-menu" style="border-top-color: var(--accent-graphic);" onclick="clickNav('graphic')">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                        <span style="font-size:2rem; background: #fdf2ff; padding:10px; border-radius:12px;">🎨</span>
+                        <span style="color:var(--accent-graphic); font-weight:800; font-size:0.8rem;">MODULE 04</span>
+                    </div>
+                    <h3>Graphic Design</h3>
+                    <p>Brainstorm movie posters, brand identities, and 3D typography concepts.</p>
+                </div>
+
+                <!-- Full Stack -->
+                <div class="card-menu" style="border-top-color: var(--accent-code);" onclick="clickNav('fullstack')">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                        <span style="font-size:2rem; background: #ecfdf5; padding:10px; border-radius:12px;">💻</span>
+                        <span style="color:var(--accent-code); font-weight:800; font-size:0.8rem;">MODULE 05</span>
+                    </div>
+                    <h3>Full-Stack Dev</h3>
+                    <p>Debug code, build architectures, write SQL, and understand errors simply.</p>
+                </div>
+            </div>
+
+            <!-- New Feature Grid -->
+            <div
+                style="margin-top: 4rem; padding: 2rem; background: #ffffff; border-radius: 16px; border: 1px solid #eee;">
+                <h3 style="text-align:center; margin-bottom: 2rem;">Why Learn AI?</h3>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: center;">
+                    <div>
+                        <div style="font-size:2rem; margin-bottom:0.5rem;">⚡</div>
+                        <h4>Save Time</h4>
+                        <p style="font-size:0.9rem; color:var(--text-sub);">Automate comprehensive tasks in seconds
+                            instead of hours.</p>
+                    </div>
+                    <div>
+                        <div style="font-size:2rem; margin-bottom:0.5rem;">💡</div>
+                        <h4>Boost Creativity</h4>
+                        <p style="font-size:0.9rem; color:var(--text-sub);">Never face a blank page again. Generate
+                            infinite ideas.</p>
+                    </div>
+                    <div>
+                        <div style="font-size:2rem; margin-bottom:0.5rem;">📈</div>
+                        <h4>Career Growth</h4>
+                        <p style="font-size:0.9rem; color:var(--text-sub);">Position yourself as a forward-thinking
+                            expert in your field.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FASHION -->
+        <div id="fashion" class="page-section">
+            <div class="course-header" style="border-color: var(--accent-fashion)">
+                <div>
+                    <h2>Fashion Design</h2>
+                </div><span style="font-size:3rem">👗</span>
+            </div>
+            <h3 class="section-title"><span>1</span> Live Demo Prompts</h3>
+            <div class="prompts-container">
+
+                <!-- MASTERPIECE 1: PROJECT BUILDER -->
+                <div class="prompt-box masterpiece-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">🏆 MASTER PROJECT TEMPLATE</div>
+                        <button class="btn-copy" onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Act as a Lead Fashion Designer. I want to build a Comprehensive
+                            Collection Plan for a [Season/Year] collection.
+                            Title: [Collection Name]
+                            Theme: [Theme Description]
+                            Target Audience: [Audience]
+
+                            Please generate a full 5-step Project Plan covering:
+                            1. Mood Board Concept (Key visual elements, textures).
+                            2. Color Palette (5 specific hex codes with meaning).
+                            3. Fabric Selection (Sustainable Focus).
+                            4. Key Pieces (Sketch descriptions for 3 outfits).
+                            5. Marketing Hook (Instagram caption and Hashtags).
+                            Format the output as a structured report.</div>
+                        <div class="template-block">
+                            <div class="template-title">Edit these parts:</div>
+                            <div class="template-example">[Season] = Spring 2026<br>[Theme] = Cybernetic Forest (Nature
+                                + Tech)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MASTERPIECE 2: PROMPT IMPROVER -->
+                <div class="prompt-box" style="border: 1px solid #fff;">
+                    <div class="prompt-header">
+                        <div class="prompt-label" style="color:white;">✨ THE PROMPT IMPROVER (RUN ONCE)</div>
+                        <button class="btn-copy" onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">You are a PERMANENT PROMPT REWRITER.
+
+                            Do NOT answer my messages.
+                            Your ONLY job is to rewrite every message I send into the BEST possible ChatGPT prompt.
+
+                            Store this profile in memory:
+
+                            Profession:
+                            Fashion Designer
+
+                            Use-cases:
+                            Trend Forecasting, Tech Packs, Visual Renders, Sustainable Material Research
+
+                            Experience level:
+                            Professional Designer
+
+                            Output preference:
+                            Visual descriptions, structured data tables for specs, industry-standard terminology.
+
+                            Rules:
+                            1. Never answer directly.
+                            2. Always improve clarity, depth, and structure.
+                            3. Always adapt the prompt to my profession.
+                            4. Add role, task, context, and output format automatically.
+                            5. Output ONLY the rewritten prompt.
+
+                            If you understand, reply only:
+                            “Prompt Rewriter Activated.”</div>
+                    </div>
+                </div>
+
+                <!-- LIVE DEMOS -->
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Visual Render</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Create a text-to-image prompt for Midjourney: 'Photorealistic rendering
+                            of a futuristic Digital Nature couture gown made of bioluminescent fiber optics and moss.
+                            Cinematic lighting, 8k resolution, Vogue editorial style.'</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Tech Pack (Excel)</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Create a comprehensive 'Tech Pack' data table for a Denim Jacket
+                            production. Include columns for: Measurement Point (Shoulder, Bust, Length), Tolerance
+                            (+/-), and Size Grading (S, M, L, XL) in cm.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Mood Board</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Describe a 'Neo-Tokyo' streetwear mood board. List 5 key visual
+                            elements, specific neon color codes, texture references (e.g. PVC, Matte Black Cotton), and
+                            styling accessories.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Pattern Generator</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Generate a descriptive prompt for AI to create a seamless floral
+                            textile pattern. It must be inspired by 17th-century Dutch oil paintings, dark background,
+                            with vibrant tulips and peonies. high detail.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Runway Critic</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Act as a runway critic. Review a hypothetical collection based on
+                            'Ocean Plastic' recycling. Describe the standout look in vivid detail, focusing on how the
+                            plastic was transformed into luxury fabric.</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <h3 class="section-title"><span>2</span> Domain-Specific AI Tools</h3>
+            <div class="tools-grid">
+                <a href="https://www.bing.com/images/create" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">Bing Image Creator</div>
+                    <div class="tool-desc">Best free tool (DALL-E 3) to generate fashion patterns.</div>
+                </a>
+                <a href="https://newarc.ai/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Trials</span>
+                    <div class="tool-name">NewArc.ai</div>
+                    <div class="tool-desc">Turn rough sketches into realistic renders instantly.</div>
+                </a>
+                <a href="https://www.botika.io/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Free Plan</span>
+                    <div class="tool-name">Botika</div>
+                    <div class="tool-desc">Generate professional AI models.</div>
+                </a>
+                <a href="https://firefly.adobe.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free Web</span>
+                    <div class="tool-name">Adobe Firefly</div>
+                    <div class="tool-desc">Recolor fabrics and generate textures safely.</div>
+                </a>
+                <a href="https://www.khroma.co/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">Khroma</div>
+                    <div class="tool-desc">AI color palette generator.</div>
+                </a>
+                <a href="https://resleeve.ai/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Free Trial</span>
+                    <div class="tool-name">Resleeve</div>
+                    <div class="tool-desc">AI fashion photoshoots.</div>
+                </a>
+                <a href="https://designovel.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-paid">Paid</span>
+                    <div class="tool-name">Designovel</div>
+                    <div class="tool-desc">Metric-based trend forecasting.</div>
+                </a>
+                <a href="https://www.midjourney.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-paid">Paid</span>
+                    <div class="tool-name">Midjourney</div>
+                    <div class="tool-desc">High-end artistic generator for couture.</div>
+                </a>
+            </div>
+            <h3 class="section-title"><span>3</span> Real-Life Use Cases</h3>
+            <ul class="uses-list">
+                <li>Creating rich descriptions.</li>
+                <li>Researching history.</li>
+                <li>Portfolio writing.</li>
+            </ul>
+        </div>
+
+        <!-- PLACEHOLDERS FOR OTHER SECTIONS -->
+        <!-- INTERIOR & ARCHITECTURE -->
+        <div id="interior" class="page-section">
+            <div class="course-header" style="border-color: var(--accent-interior)">
+                <div>
+                    <h2>Interior Design & Arch.</h2>
+                </div><span style="font-size:3rem">🛋️</span>
+            </div>
+            <h3 class="section-title"><span>1</span> Live Demo Prompts</h3>
+            <div class="prompts-container">
+                <!-- MASTERPIECE 1 -->
+                <div class="prompt-box masterpiece-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">🏆 MASTER PROJECT TEMPLATE</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Act as a Senior Interior Architect. Create a Comprehensive Renovation
+                            Plan for a [Room Type] in [Style] style.
+                            Client Budget: [Budget Amount]
+                            Constraints: [Constraints]
+
+                            Generate a report containing:
+                            1. Spatial Layout Strategy (Zoning, Flow).
+                            2. Lighting Plan (Ambient, Task, Accent suggestions).
+                            3. Material & Texture Board (Flooring, Walls, Fabrics).
+                            4. Furniture Schedule (List of key 5 items with dimensions).
+                            5. Estimated Budget Breakdown Table.
+                        </div>
+                        <div class="template-block">
+                            <div class="template-title">Edit these parts:</div>
+                            <div class="template-example">[Room Type] = Open Plan Kitchen<br>[Style] = Japandi (Japanese
+                                + Scandi)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MASTERPIECE 2 -->
+                <div class="prompt-box" style="border: 1px solid #fff;">
+                    <div class="prompt-header">
+                        <div class="prompt-label" style="color:white;">✨ THE PROMPT IMPROVER (RUN ONCE)</div><button
+                            class="btn-copy" onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">You are a PERMANENT PROMPT REWRITER.
+
+                            Do NOT answer my messages.
+                            Your ONLY job is to rewrite every message I send into the BEST possible ChatGPT prompt.
+
+                            Store this profile in memory:
+
+                            Profession:
+                            Interior Architect
+
+                            Use-cases:
+                            Renovation Plans, Material Boards, Client Presentations, Lighting Schedules
+
+                            Experience level:
+                            Senior Architect
+
+                            Output preference:
+                            Detailed reports, budget breakdown tables, spatial planning descriptions.
+
+                            Rules:
+                            1. Never answer directly.
+                            2. Always improve clarity, depth, and structure.
+                            3. Always adapt the prompt to my profession.
+                            4. Add role, task, context, and output format automatically.
+                            5. Output ONLY the rewritten prompt.
+
+                            If you understand, reply only:
+                            “Prompt Rewriter Activated.”</div>
+                    </div>
+                </div>
+
+                <!-- LIVE DEMOS -->
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Visual Render</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Describe an architectural photography shot of a Sunken Living Room with
+                            floor-to-ceiling windows, overlooking a rainy forest. Golden Hour lighting, Brutalist
+                            concrete texture, cozy atmosphere. 8k resolution.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Budget Schedule</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Create a Markdown table for a 'Bathroom Renovation Budget'. Columns:
+                            Item Category (Plumbing, Tiling, Fixtures), Estimated Cost ($), Priority Level (High/Low),
+                            and Vendor Notes.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Client Email</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Write a persuasive email to a client explaining why we need to increase
+                            the budget for 'Marble Countertops' instead of laminate. Focus on long-term value,
+                            durability, and aesthetic ROI.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Material Board</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Curate a material palette for a 'Industrial Loft' office. Suggest
+                            specific wood tones (e.g. Walnut), metal finishes (e.g. Brushed Brass), and textile types
+                            for upholstery.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Isometric Plan</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Generate a Midjourney prompt for: 'Isometric 3D floor plan of a tiny
+                            house with smart storage solutions. Cutaway view, clay render style, soft pastel colors,
+                            high detail.'</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section-title"><span>2</span> Domain-Specific AI Tools</h3>
+            <div class="tools-grid">
+                <a href="https://www.promeai.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Best Free</span>
+                    <div class="tool-name">PromeAI</div>
+                    <div class="tool-desc">Turn sketches into beautiful 3D renders.</div>
+                </a>
+                <a href="https://planner5d.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Freemium</span>
+                    <div class="tool-name">Planner 5D</div>
+                    <div class="tool-desc">2D/3D home design tool.</div>
+                </a>
+                <a href="https://www.homestyler.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free Web</span>
+                    <div class="tool-name">Homestyler</div>
+                    <div class="tool-desc">Cloud rendering interior design.</div>
+                </a>
+                <a href="https://www.canva.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">Canva</div>
+                    <div class="tool-desc">Mood boards and presentations.</div>
+                </a>
+                <a href="https://app.sketchup.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">SketchUp Free</div>
+                    <div class="tool-desc">Web-based 3D modeling.</div>
+                </a>
+                <a href="https://interiorai.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Free 5/day</span>
+                    <div class="tool-name">InteriorAI</div>
+                    <div class="tool-desc">Restyle room photos instantly.</div>
+                </a>
+                <a href="https://mnml.ai/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-paid">Paid</span>
+                    <div class="tool-name">Mnml.ai</div>
+                    <div class="tool-desc">Exterior architectural rendering.</div>
+                </a>
+                <a href="https://getfloorplan.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-paid">Paid</span>
+                    <div class="tool-name">GetFloorPlan</div>
+                    <div class="tool-desc">Convert sketches to floorplans.</div>
+                </a>
+            </div>
+            <h3 class="section-title"><span>3</span> Real-Life Use Cases</h3>
+            <ul class="uses-list">
+                <li>Contractor emails.</li>
+                <li>Material selection.</li>
+                <li>Budget planning.</li>
+            </ul>
+        </div>
+
+        <!-- OFFICE AUTOMATION -->
+        <div id="office" class="page-section">
+            <div class="course-header" style="border-color: var(--accent-office)">
+                <div>
+                    <h2>Office Automation</h2>
+                </div><span style="font-size:3rem">📊</span>
+            </div>
+            <h3 class="section-title"><span>1</span> Live Demo Prompts</h3>
+            <div class="prompts-container">
+                <!-- MASTERPIECE 1 -->
+                <div class="prompt-box masterpiece-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">🏆 MASTER PROJECT TEMPLATE</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Act as a Business Analyst. I have a dataset about [Topic/Data].
+                            Goal: Create a Complete Analysis Suite.
+
+                            Please generate:
+                            1. Data Cleaning Steps (Python/Excel formulas to fix common errors).
+                            2. Key Insights to look for (Trends, Outliers).
+                            3. Dashboard Wireframe Description (What charts to use).
+                            4. Executive Summary Template (For the CEO).
+                            5. Follow-up Email to the team sharing these findings.
+                        </div>
+                        <div class="template-block">
+                            <div class="template-title">Edit these parts:</div>
+                            <div class="template-example">[Topic] = Q3 Sales Figures<br>[Data] = 5000 rows of Customer
+                                Transactions</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MASTERPIECE 2 -->
+                <div class="prompt-box" style="border: 1px solid #fff;">
+                    <div class="prompt-header">
+                        <div class="prompt-label" style="color:white;">✨ THE PROMPT IMPROVER (RUN ONCE)</div><button
+                            class="btn-copy" onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">You are a PERMANENT PROMPT REWRITER.
+
+                            Do NOT answer my messages.
+                            Your ONLY job is to rewrite every message I send into the BEST possible ChatGPT prompt.
+
+                            Store this profile in memory:
+
+                            Profession:
+                            Business Operations Manager
+
+                            Use-cases:
+                            Data Analysis, Excel Macros, Executive Summaries, SOP Creation
+
+                            Experience level:
+                            Corporate Expert
+
+                            Output preference:
+                            Step-by-step guides, VBA code blocks, professional email templates.
+
+                            Rules:
+                            1. Never answer directly.
+                            2. Always improve clarity, depth, and structure.
+                            3. Always adapt the prompt to my profession.
+                            4. Add role, task, context, and output format automatically.
+                            5. Output ONLY the rewritten prompt.
+
+                            If you understand, reply only:
+                            “Prompt Rewriter Activated.”</div>
+                    </div>
+                </div>
+
+                <!-- LIVE DEMOS -->
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Dataset Generator</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Generate a dummy CSV dataset for 'Employee Performance'. Columns: ID,
+                            Name, Department, Sales_Target, Actual_Sales, Satisfaction_Score (1-10). Create 20 rows of
+                            realistic variation.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Dashboard Wireframe</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Describe a PowerBI Dashboard layout for 'Supply Chain Logistics'.
+                            Include 4 KPI cards at the top, a central map visualization for shipping routes, and a
+                            bottom bar chart for 'Delivery Time by Region'.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The VBA Macro</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Write a VBA Macro for Excel that: 1. Highlights all cells in Column B
+                            that contain the word 'Error' in red. 2. Auto-fits all column widths. 3. Saves the file as a
+                            PDF in the same folder.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The SOP Builder</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Create a Standard Operating Procedure (SOP) for 'Onboarding a New
+                            Client'. Use a numbered list format with clear 'Action Owners' and 'Output Documents' for
+                            each step.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Meeting Minute Taker</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">I will paste a transcript of a messy meeting below. Please summarize it
+                            into: 1. Key Decisions Made. 2. Action Items (Who/When). 3. Open Questions. \n[PASTE
+                            TRANSCRIPT HERE]</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section-title"><span>2</span> Domain-Specific AI Tools</h3>
+            <div class="tools-grid">
+                <a href="https://chat.openai.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">ChatGPT</div>
+                    <div class="tool-desc">Drafting emails and logic.</div>
+                </a>
+                <a href="https://gamma.app/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Free 400 credits</span>
+                    <div class="tool-name">Gamma App</div>
+                    <div class="tool-desc">Generate full PowerPoint presentations.</div>
+                </a>
+                <a href="https://www.deepl.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">DeepL</div>
+                    <div class="tool-desc">Accurate document translator.</div>
+                </a>
+                <a href="https://otter.ai/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Free Plan</span>
+                    <div class="tool-name">Otter.ai</div>
+                    <div class="tool-desc">Meeting recording and summary.</div>
+                </a>
+                <a href="https://www.sheetai.app/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Freemium</span>
+                    <div class="tool-name">SheetAI</div>
+                    <div class="tool-desc">AI functions for Sheets.</div>
+                </a>
+                <a href="https://www.formulabot.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Free Plan</span>
+                    <div class="tool-name">Formula Bot</div>
+                    <div class="tool-desc">Text-to-Formula generator.</div>
+                </a>
+                <a href="https://pdf.ai/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Freemium</span>
+                    <div class="tool-name">PDF.ai</div>
+                    <div class="tool-desc">Chat with PDF contracts.</div>
+                </a>
+                <a href="https://grammarly.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">Grammarly</div>
+                    <div class="tool-desc">Fixes spelling and tone.</div>
+                </a>
+            </div>
+            <h3 class="section-title"><span>3</span> Real-Life Use Cases</h3>
+            <ul class="uses-list">
+                <li>Excel debugging.</li>
+                <li>Weekly reports.</li>
+                <li>Meeting summaries.</li>
+            </ul>
+        </div>
+        <!-- GRAPHIC DESIGN -->
+        <div id="graphic" class="page-section">
+            <div class="course-header" style="border-color: var(--accent-graphic)">
+                <div>
+                    <h2>Graphic Design</h2>
+                </div><span style="font-size:3rem">🎨</span>
+            </div>
+            <h3 class="section-title"><span>1</span> Live Demo Prompts</h3>
+            <div class="prompts-container">
+                <!-- MASTERPIECE 1 -->
+                <div class="prompt-box masterpiece-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">🏆 MASTER PROJECT TEMPLATE</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Act as a Creative Director. I need a Complete Brand Identity Package
+                            for [Brand Name], a [Industry] company.
+                            Style Keywords: [Keywords]
+
+                            Please generate:
+                            1. Logo Concepts (3 distinct directions with visual descriptions).
+                            2. Color Palette (Primary, Secondary, Accent hex codes + Psychology).
+                            3. Typography Pairing (Header font vs Body font suggestion).
+                            4. Social Media Grid Plan (9-post grid layout concept).
+                            5. Brand Voice Guidelines (Tone, Do's and Don'ts).
+                        </div>
+                        <div class="template-block">
+                            <div class="template-title">Edit these parts:</div>
+                            <div class="template-example">[Brand Name] = Solara<br>[Industry] = Sustainable Energy Drink
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MASTERPIECE 2 -->
+                <div class="prompt-box" style="border: 1px solid #fff;">
+                    <div class="prompt-header">
+                        <div class="prompt-label" style="color:white;">✨ THE PROMPT IMPROVER (RUN ONCE)</div><button
+                            class="btn-copy" onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">You are a PERMANENT PROMPT REWRITER.
+
+                            Do NOT answer my messages.
+                            Your ONLY job is to rewrite every message I send into the BEST possible ChatGPT prompt.
+
+                            Store this profile in memory:
+
+                            Profession:
+                            Creative Director & Graphic Designer
+
+                            Use-cases:
+                            Brand Identity Systems, Movie Posters, Typography, Social Media Grids
+
+                            Experience level:
+                            Creative Professional
+
+                            Output preference:
+                            Visual concepts, HEX color palettes, Midjourney/DALL-E prompt wording.
+
+                            Rules:
+                            1. Never answer directly.
+                            2. Always improve clarity, depth, and structure.
+                            3. Always adapt the prompt to my profession.
+                            4. Add role, task, context, and output format automatically.
+                            5. Output ONLY the rewritten prompt.
+
+                            If you understand, reply only:
+                            “Prompt Rewriter Activated.”</div>
+                    </div>
+                </div>
+
+                <!-- LIVE DEMOS -->
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Movie Poster</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Prompt for Midjourney/Dall-E: A minimalist movie poster for a sci-fi
+                            thriller titled 'The Last Signal'. Use negative space, a lone radio tower, red and black
+                            color scheme. Saul Bass style.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The 3D Typography</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Generate an image prompt: The letter 'A' made of dripping liquid honey,
+                            hyper-realistic, 3D render, studio lighting, yellow background.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Brand Guidelines</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Create a Table of Contents for a Brand Guideline Document. Sections
+                            should include: Introduction, Logo Usage (Safe Zones), Color Palette, Typography,
+                            Photography Style, and Tone of Voice.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The SVG Generator</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Write the SVG code for a simple 'Cloud Upload' icon. It should be a
+                            24x24 viewBox, stroke width 2, rounded corners.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Content Grid</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Plan a week of Instagram content for a coffee shop. 7 posts alternating
+                            between: Product Shot, Behind the Scenes, and Customer Testimonial. Include caption hooks.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section-title"><span>2</span> Domain-Specific AI Tools</h3>
+            <div class="tools-grid">
+                <a href="https://www.bing.com/images/create" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Best Free</span>
+                    <div class="tool-name">Bing Create</div>
+                    <div class="tool-desc">DALL-E 3 typography and posters.</div>
+                </a>
+                <a href="https://firefly.adobe.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free Web</span>
+                    <div class="tool-name">Adobe Firefly</div>
+                    <div class="tool-desc">Text effects and commercial safe images.</div>
+                </a>
+                <a href="https://fontjoy.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">FontJoy</div>
+                    <div class="tool-desc">AI Font pairing generator.</div>
+                </a>
+                <a href="https://ideogram.ai/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Free Plan</span>
+                    <div class="tool-name">Ideogram</div>
+                    <div class="tool-desc">Best for text inside images.</div>
+                </a>
+                <a href="https://vectorizer.ai/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Beta</span>
+                    <div class="tool-name">Vectorizer.ai</div>
+                    <div class="tool-desc">Convert JPG logos to SVG vectors.</div>
+                </a>
+                <a href="https://www.remove.bg/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">Remove.bg</div>
+                    <div class="tool-desc">Instant background removal.</div>
+                </a>
+                <a href="https://www.khroma.co/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">Khroma</div>
+                    <div class="tool-desc">Infinite color palettes.</div>
+                </a>
+                <a href="https://www.midjourney.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-paid">Paid</span>
+                    <div class="tool-name">Midjourney</div>
+                    <div class="tool-desc">Industry standard for creative visuals.</div>
+                </a>
+            </div>
+            <h3 class="section-title"><span>3</span> Real-Life Use Cases</h3>
+            <ul class="uses-list">
+                <li>Logo concepts.</li>
+                <li>Lorem Ipsum alternatives.</li>
+            </ul>
+        </div>
+
+        <!-- FULL STACK -->
+        <div id="fullstack" class="page-section">
+            <div class="course-header" style="border-color: var(--accent-code)">
+                <div>
+                    <h2>Full-Stack (MERN)</h2>
+                </div><span style="font-size:3rem">💻</span>
+            </div>
+            <h3 class="section-title"><span>1</span> Live Demo Prompts</h3>
+            <div class="prompts-container">
+                <!-- MASTERPIECE 1 -->
+                <div class="prompt-box masterpiece-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">🏆 MASTER PROJECT TEMPLATE</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Act as a Senior Full-Stack Developer. I need to build a [Project Name]
+                            using the MERN Stack.
+                            Feature Focus: [Core Feature]
+
+                            Please provide a technical implementation plan:
+                            1. Database Schema (Mongoose models structure).
+                            2. API Endpoints (List of CRUD routes needed).
+                            3. Frontend Component Structure (React Tree).
+                            4. State Management Strategy (Context API vs Redux).
+                            5. Step-by-Step implementation order.
+                        </div>
+                        <div class="template-block">
+                            <div class="template-title">Edit these parts:</div>
+                            <div class="template-example">[Project Name] = Task Management App<br>[Core Feature] =
+                                Real-time drag and drop board</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MASTERPIECE 2 -->
+                <div class="prompt-box" style="border: 1px solid #fff;">
+                    <div class="prompt-header">
+                        <div class="prompt-label" style="color:white;">✨ THE PROMPT IMPROVER (RUN ONCE)</div><button
+                            class="btn-copy" onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">You are a PERMANENT PROMPT REWRITER.
+
+                            Do NOT answer my messages.
+                            Your ONLY job is to rewrite every message I send into the BEST possible ChatGPT prompt.
+
+                            Store this profile in memory:
+
+                            Profession:
+                            Senior Full-Stack Developer
+
+                            Use-cases:
+                            MERN Stack Architecture, Debugging, API Design, Database Optimization
+
+                            Experience level:
+                            Senior Engineer
+
+                            Output preference:
+                            Clean code snippets, detailed comments, implementation steps.
+
+                            Rules:
+                            1. Never answer directly.
+                            2. Always improve clarity, depth, and structure.
+                            3. Always adapt the prompt to my profession.
+                            4. Add role, task, context, and output format automatically.
+                            5. Output ONLY the rewritten prompt.
+
+                            If you understand, reply only:
+                            “Prompt Rewriter Activated.”</div>
+                    </div>
+                </div>
+
+                <!-- LIVE DEMOS -->
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The UI Component</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Write the React + Tailwind CSS code for a 'Dark Mode Pricing Card'
+                            component. It should have a toggle switch for Monthly/Yearly billing, and 3 tiers (Basic,
+                            Pro, Enterprise).</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Code Explainer</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Act as a friendly coding tutor. I will paste a code snippet below.
+                            Please explain it to me in very simple English, line-by-line, as if I am a complete
+                            beginner. Focus on the logic, not just the syntax. \n[PASTE YOUR CODE HERE]</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Web Scraper</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Write a Node.js script using Puppeteer to scrape product names and
+                            prices from an e-commerce page. Handle pagination and save the data to a 'products.json'
+                            file.</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The Mock API Data</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Generate a JSON array of 10 'User Profiles' for testing. Include
+                            fields: id, username, email, avatar_url, bio, and is_active (boolean).</div>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-header">
+                        <div class="prompt-label">The ER Diagram</div><button class="btn-copy"
+                            onclick="copyText(this)">Copy</button>
+                    </div>
+                    <div class="prompt-content-wrapper">
+                        <div class="prompt-text">Describe an Entity Relationship Diagram (ERD) for a 'Food Delivery
+                            App'. Define tables for Users, Restaurants, Menu Items, Orders, and Drivers. List
+                            relationships (One-to-Many).</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section-title"><span>2</span> Domain-Specific AI Tools</h3>
+            <div class="tools-grid">
+                <a href="https://chat.openai.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">ChatGPT</div>
+                    <div class="tool-desc">Logic, debugging, and code explanation.</div>
+                </a>
+                <a href="https://blackbox.ai/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">Blackbox AI</div>
+                    <div class="tool-desc">Coding AI with web knowledge.</div>
+                </a>
+                <a href="https://replit.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-freemium">Freemium</span>
+                    <div class="tool-name">Replit</div>
+                    <div class="tool-desc">Online IDE with AI assistant.</div>
+                </a>
+                <a href="https://v0.dev/" target="_blank" class="tool-card"><span class="tool-badge badge-freemium">Free
+                        Plan</span>
+                    <div class="tool-name">v0.dev</div>
+                    <div class="tool-desc">Generate React/Tailwind UI.</div>
+                </a>
+                <a href="https://www.postman.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">Postman</div>
+                    <div class="tool-desc">API testing with auto-tests.</div>
+                </a>
+                <a href="https://huggingface.co/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">Hugging Face</div>
+                    <div class="tool-desc">Open-source AI models.</div>
+                </a>
+                <a href="https://www.phind.com/" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-free">Free</span>
+                    <div class="tool-name">Phind</div>
+                    <div class="tool-desc">Search engine for developers.</div>
+                </a>
+                <a href="https://github.com/features/copilot" target="_blank" class="tool-card"><span
+                        class="tool-badge badge-paid">Paid</span>
+                    <div class="tool-name">GitHub Copilot</div>
+                    <div class="tool-desc">AI pair programmer.</div>
+                </a>
+            </div>
+            <h3 class="section-title"><span>3</span> Real-Life Use Cases</h3>
+            <ul class="uses-list">
+                <li>Understanding errors.</li>
+                <li>Refactoring code.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Designed for the Future of Work. Empowering Fashion, Interior, Office, Graphic & Code Professionals.</p>
+    </footer>
+    <script>
+        function showSection(sectionId, btn) {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(sectionId);
+            if (target) target.classList.add('active');
+
+            const textBtns = document.querySelectorAll('.nav-btn');
+            textBtns.forEach(b => b.classList.remove('active'));
+            if (btn) { btn.classList.add('active'); }
+            else { textBtns.forEach(b => { if (b.getAttribute('onclick').includes(sectionId)) b.classList.add('active'); }); }
+            window.scrollTo(0, 0);
+        }
+        function clickNav(sectionId) { showSection(sectionId, null); }
+        function copyText(btn) {
+            const box = btn.closest('.prompt-box');
+            const text = box.querySelector('.prompt-text').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const original = btn.innerText;
+                btn.innerText = "Copied!";
+                btn.style.background = "#10a37f";
+                btn.style.color = "white";
+                setTimeout(() => {
+                    btn.innerText = original;
+                    btn.style.background = "rgba(255,255,255,0.1)";
+                    btn.style.color = "#fff";
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>
